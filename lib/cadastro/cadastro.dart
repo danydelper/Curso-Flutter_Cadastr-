@@ -6,16 +6,9 @@ class CdastroView extends StatelessWidget {
   CdastroView({Key? key, required this.user}) : super(key: key);
   final User? user;
   final controller = CadastroController();
-  final nameController = TextEditingController();
-  final idadeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    if (user != null) {
-      nameController.text = user!.nome;
-      idadeController.text = user!.idade.toString();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro'),
@@ -29,14 +22,14 @@ class CdastroView extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
-                      controller: nameController,
+                      controller: controller.nameController,
                       decoration: const InputDecoration(
                         label: Text('Name'),
                       ),
                     ),
                     TextField(
                       keyboardType: TextInputType.number,
-                      controller: idadeController,
+                      controller: controller.idadeController,
                       decoration: const InputDecoration(
                         label: Text('Idade'),
                       ),
@@ -49,12 +42,7 @@ class CdastroView extends StatelessWidget {
               ),
               OutlinedButton(
                 onPressed: () {
-                  final listUsers = controller.addUser(
-                      nome: nameController.text, idade: idadeController.text);
-
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/home', (route) => false,
-                      arguments: listUsers);
+                  controller.addUser(context: context);
                 },
                 child: Visibility(
                   visible: user == null,
