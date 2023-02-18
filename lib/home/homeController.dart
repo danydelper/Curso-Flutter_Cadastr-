@@ -6,7 +6,7 @@ import 'package:rotas_pilha/userMode.dart';
 class HomeController {
   final ApiService _apiService = ApiService();
 
-  Future <List<User>?> getAllUser() async {
+  Future<List<User>?> getAllUser() async {
     final response = await _apiService.dio.get("/user");
 
     if (response.statusCode == 200) {
@@ -15,5 +15,12 @@ class HomeController {
     } else {
       return null;
     }
+  }
+
+  Future<void> deleteUser(String userId) async {
+    await _apiService.dio.delete(
+      "/user",
+      queryParameters: {"id": userId},
+    );
   }
 }

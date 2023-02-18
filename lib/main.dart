@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         if (setting.name == '/cadastro') {
           final user = setting.arguments as User?;
           return MaterialPageRoute(
-            builder: (ctx) => CdastroView(user: user),
+            builder: (ctx) => CdastroView(userId: user?.id),
           );
         }
       },

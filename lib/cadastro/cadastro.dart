@@ -3,8 +3,8 @@ import 'package:rotas_pilha/cadastro/controller.dart';
 import 'package:rotas_pilha/userMode.dart';
 
 class CdastroView extends StatelessWidget {
-  CdastroView({Key? key, required this.user}) : super(key: key);
-  final User? user;
+  CdastroView({Key? key, required this.userId}) : super(key: key);
+  final String? userId;
   final controller = CadastroController();
 
   @override
@@ -12,6 +12,24 @@ class CdastroView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro'),
+        actions: [
+          FutureBuilder<User>(
+            future: controller.getUser(userId),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final user = snapshot.data!;
+                if (user.id != null) {
+                  return const Icon(Icons.edit);
+                }
+                return const Icon(Icons.person);
+              } else if (snapshot.hasError) {
+                return const Icon(Icons.error);
+              } else {
+                return const Text("Carregando...");
+              }
+            },
+          )
+        ],
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -41,11 +59,18 @@ class CdastroView extends StatelessWidget {
                 height: 10,
               ),
               OutlinedButton(
-                onPressed: () {
-                  controller.addUser(context: context);
+                onPressed: () async {
+                  if (userId == null) {
+                    await controller.addUser(context: context);
+                  }
+
+                  if (userId != null) {
+                    await controller.editUser(
+                        context: context, userId: userId!);
+                  }
                 },
                 child: Visibility(
-                  visible: user == null,
+                  visible: userId == null,
                   child: const Text('Cadastrar'),
                   replacement: const Text('Editar'),
                 ),

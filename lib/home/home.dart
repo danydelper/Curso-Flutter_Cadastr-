@@ -3,8 +3,14 @@ import 'package:rotas_pilha/home/homeController.dart';
 import '../components/card.dart';
 import '../userMode.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({Key? key}) : super(key: key);
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   final controller = HomeController();
 
   @override
@@ -27,8 +33,17 @@ class HomeView extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.70,
                       child: Column(
                         children: listUser
-                                ?.map((user) => CardName(
-                                    name: user.nome, idade: user.idade))
+                                ?.map(
+                                  (user) => CardName(
+                                    name: user.nome,
+                                    idade: user.idade,
+                                    userId: user.id!,
+                                    onDelete: () async {
+                                      await controller.deleteUser(user.id!);
+                                      setState(() {});
+                                    },
+                                  ),
+                                )
                                 .toList() ??
                             [],
                       ),
