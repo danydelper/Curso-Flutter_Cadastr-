@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rotas_pilha/cadastro/controller.dart';
+import 'package:rotas_pilha/app/modules/cadastro/controller.dart';
 import 'package:rotas_pilha/userMode.dart';
 
 class CdastroView extends StatelessWidget {

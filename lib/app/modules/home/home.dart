@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rotas_pilha/home/homeController.dart';
-import '../components/card.dart';
-import '../userMode.dart';
+import 'package:rotas_pilha/app/modules/home/homeController.dart';
+import '../../components/card.dart';
+import '../../../userMode.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final controller = HomeController();
+  final controller = homeController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +28,23 @@ class _HomeViewState extends State<HomeView> {
                 future: controller.getAllUser(),
                 builder: (ctx, snapshot) {
                   if (snapshot.hasData) {
-                    final listUser = snapshot.data;
+                    final listUser = snapshot.data!;
                     return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.70,
-                      child: Column(
-                        children: listUser
-                                ?.map(
-                                  (user) => CardName(
-                                    name: user.nome,
-                                    idade: user.idade,
-                                    userId: user.id!,
-                                    onDelete: () async {
-                                      await controller.deleteUser(user.id!);
-                                      setState(() {});
-                                    },
-                                  ),
-                                )
-                                .toList() ??
-                            [],
+                      child: ListView.builder(
+                        itemCount: listUser.length,
+                        itemBuilder: (ctx, i) {
+                          final user = listUser[i];
+                          return CardName(
+                            name: user.nome,
+                            idade: user.idade,
+                            userId: user.id!,
+                            onDelete: () async {
+                              await controller.deleteUser(user.id!);
+                              setState(() {});
+                            },
+                          );
+                        },
                       ),
                     );
                   } else if (snapshot.hasError) {

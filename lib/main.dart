@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rotas_pilha/cadastro/cadastro.dart';
-import 'package:rotas_pilha/home/home.dart';
+import 'package:rotas_pilha/app/modules/cadastro/cadastro.dart';
+import 'package:rotas_pilha/app/modules/home/home.dart';
 import 'package:rotas_pilha/userMode.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         }
       },
       routes: {
-        "/home": (ctx) => HomeView(),
+        "/home": (ctx) => const HomeView(),
       },
       initialRoute: '/home',
     );
